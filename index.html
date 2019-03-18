@@ -8,6 +8,7 @@
     <title> 07 Train Scheduler</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 </head>
 
 <body style="width: 960px; margin: auto; background-image: url(assets/images/connectwork.png)">
@@ -16,6 +17,7 @@
             <div class="col-12">
                 <div class="jumbotron" style="text-align: center;">
                     <h1>Firebase Train Scheduler</h1>
+                    <p>Current Time: </p>
                 </div>
             </div>
         </div>
@@ -26,7 +28,20 @@
                         Current Train Schedule
                     </div>
                     <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Train name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Frequency (Minutes)</th>
+                                    <th scope="col">Next Arrival</th>
+                                    <th scope="col">Minutes Away</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -43,13 +58,43 @@
                             <div class="form-group">
                                 <label for="trainName">Train Name</label>
                                 <input class="form-control" type="text" id="trainName">
+                                <br>
+                                <label for="destination">Destination</label>
+                                <input class="form-control" type="text" id="destination">
+                                <br>
+                                <label for="firstTime">First Train Time (HH:mm - Military Time)</label>
+                                <input class="form-control" type="text" id="firstTime">
+                                <br>
+                                <label for="frequency">Frequency (Minutes)</label>
+                                <input class="form-control" type="text" id="frequency">
                             </div>
                         </form>
+                        <button class="btn btn-primary" id="submitBtn">Submit</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <br>
+
+    <script>
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyB2TlvcPsXspyHlqq-A9aPV6uz7mcq1dG4",
+            authDomain: "mag-train-schedueler.firebaseapp.com",
+            databaseURL: "https://mag-train-schedueler.firebaseio.com",
+            projectId: "mag-train-schedueler",
+            storageBucket: "mag-train-schedueler.appspot.com",
+            messagingSenderId: "22752708905"
+        };
+        firebase.initializeApp(config);
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
