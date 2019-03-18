@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 
 <body style="width: 960px; margin: auto; background-image: url(assets/images/connectwork.png)">
@@ -17,7 +19,6 @@
             <div class="col-12">
                 <div class="jumbotron" style="text-align: center;">
                     <h1>Firebase Train Scheduler</h1>
-                    <p>Current Time: </p>
                 </div>
             </div>
         </div>
@@ -28,10 +29,10 @@
                         Current Train Schedule
                     </div>
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table" id="trainTable">
                             <thead>
                                 <tr>
-                                    <th scope="col">Train name</th>
+                                    <th scope="col">Train Name</th>
                                     <th scope="col">Destination</th>
                                     <th scope="col">Frequency (Minutes)</th>
                                     <th scope="col">Next Arrival</th>
@@ -78,10 +79,6 @@
 
     <br>
 
-    <script>
-
-    </script>
-
     <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
     <script>
         // Initialize Firebase
@@ -94,11 +91,59 @@
             messagingSenderId: "22752708905"
         };
         firebase.initializeApp(config);
+        var database = firebase.database();
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+    <script>
+        var name = $("#trainName").val().trim();
+        var destination = $("#destination").val().trim();
+        var time = $("#firstTime").val().trim();
+        var frequency = $("#frequency").val().trim();
+
+        $("#submitBtn").on("click", function (event) {
+            event.preventDefault();
+
+            var newTrain = {
+                name: name,
+                destination: destination,
+                time: time,
+                frequency: frequency
+            };
+
+            database.ref().push(newTrain);
+
+            $("#trainName").val("");
+            $("#destination").val("");
+            $("#firstTime").val("");
+            $("#frequency").val("");
+
+        });
+
+    </script>
+
+    <script>
+        database.ref().on("child_added", function (childSnapshot) {
+            console.log(childSnapshot.val());
+
+            // Store everything into a variable.
+            var name = childSnapshot.val().name;
+            var time = childSnapshot.val().time;
+            var destination = childSnapshot.val().destination;
+            var frequency = childSnapshot.val().frequency;
+
+            // Create the new row
+            var newRow = $("<tr>").append(
+                $("<td>").text(name),
+                $("<td>").text(time),
+                $("<td>").text(destination),
+                $("<td>").text(frequency)
+            );
+
+            // Append the new row to the table
+            $("#trainTable > tbody").append(newRow);
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
